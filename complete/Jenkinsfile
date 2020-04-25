@@ -1,0 +1,42 @@
+pipeline {
+    agent any
+    //triggers {
+    //    GenericTrigger([
+    //        genericVariables {
+    //            genericVariable {
+    //                key('changed_files')
+    //                value('$.commits[*].[\'modified\',\'added\',\'removed\'][*]')
+    //                expressionType("JSONPath") //Optional, defaults to JSONPath
+    //                // regexpFilter("") //Optional, defaults to empty string
+    //                // defaultValue("") //Optional, defaults to empty string
+    //            }
+    //        }
+    //        // token('abc123')
+    //        printContributedVariables(true)
+    //        printPostContent(true)
+    //        // silentResponse(false)
+    //        regexpFilterText("\$changed_files")
+    //        regexpFilterExpression('.*project1+?.*')
+    //    ])
+    //}
+    stages {
+        stage ('SCM Checkout') {
+            steps {
+                sh "ls -lrta"
+                deleteDir()
+                sh "ls -lrta"
+                checkout scm
+                // echo "changed_files: ${changed_files}"
+                // git branch: 'master', credentialsId: '12345-1234-4696-af25-123455', url: 'ssh://git@bitbucket.org:company/repo.git'
+                sh "ls -lrta"
+            }
+        }
+    }
+    post {
+        always{
+            echo "Cleaning Workspace"
+            cleanWs()
+        }
+    }
+
+}
